@@ -18,7 +18,7 @@ app.get('/', (req, res, next) => {
     });
 });
 
-// CRUD routingok
+// CRUD routingok a queries fv-eivel
 
 
 
