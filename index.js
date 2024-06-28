@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const db = require('queries');
+const db = require('./queries');
 const PORT = process.env.PORT || 3000;
 
 
@@ -20,7 +20,7 @@ app.get('/', (req, res, next) => {
 
 // CRUD routingok a queries fv-eivel
 
-
+app.get('/envelopes', db.getEnvelopeNames);
 
 
 
