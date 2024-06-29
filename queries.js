@@ -10,7 +10,17 @@ const pool = new Pool({
     port: process.env.DBPORT
 });
 
+// MARK: HELPERS
+// helper/util fv-ek
 
+const getIndexByName = (thisName) => {
+        
+    return true;
+};
+
+
+
+// MARK: CALLBACKS
 // callback fv-ek a routingokhoz
 
 // get names
@@ -35,10 +45,20 @@ const getAllEnvelopes = (req, res) => {
     });
 };
 
+// get envelope by name
+const getEnvelope = (req, res) => {
+    
+    const thisEnvelope = req.params.name;
+
+    pool.query('SELECT * FROM envelopes WHERE envelope_name = $1', [thisEnvelope], (err, results) => {
+        if(err) {
+            throw err;
+        }
+        res.status(200).json(results.rows);
+    });
+};
 
 
 
 
-
-
-module.exports = { getEnvelopeNames, };
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, };

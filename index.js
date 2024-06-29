@@ -22,13 +22,13 @@ app.get('/', (req, res, next) => {
 
 // get all the names of available envelopes
 app.get('/envelope-names', db.getEnvelopeNames);
-/*
+
 // get all the envelopes' data
-app.get('/envelopes', );
+app.get('/envelopes', db.getAllEnvelopes);
 
 // get a specific envelope by NAME
-app.get('/envelopes/:name', );
-
+app.get('/envelopes/:name', db.getEnvelope);
+/*
 // POST route to create new envelope
 app.post('/envelopes', );
 
