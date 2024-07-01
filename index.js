@@ -28,10 +28,11 @@ app.get('/envelopes', db.getAllEnvelopes);
 
 // get a specific envelope by NAME
 app.get('/envelopes/:name', db.getEnvelope);
-/*
-// POST route to create new envelope
-app.post('/envelopes', );
 
+// POST route to create new envelope
+app.post('/envelopes', db.createNewEnvelope);
+
+/*
 // subtract amount from envelope - amount in Headers
 app.put('/envelopes/deduct/:name', );
 
@@ -47,22 +48,6 @@ app.delete('envelopes/:name', );
 
 
 /* copied from project 1
-// GET all the envelopes
-budgetRouter.get('/envelopes', (req, res, next) => {
-    res.status(200).send(envelopes);
-});
-
-// GET a specific envelope by NAME
-budgetRouter.get('/envelopes/:name', (req, res, next) => {
-    const thisIndex = getIndexByName(req.params.name);
-    if (thisIndex !== -1) {
-        const thisEnvelope = envelopes[thisIndex];
-        res.status(200).send(thisEnvelope);
-    } else {
-        res.status(404).send(`envelope named ${req.params.name} not found`)
-    }
-});
-
 
 // POST route to create new envelope
 budgetRouter.post('/envelopes', (req, res, next) => {

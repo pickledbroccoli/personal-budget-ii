@@ -58,7 +58,22 @@ const getEnvelope = (req, res) => {
     });
 };
 
+// post to create new envelope
+
+const createNewEnvelope = (req, res) => {
+    
+    const newName = req.body.name;
+    const newBudget = Number(req.body.budget);
+
+    pool.query('INSERT INTO envelopes (envelope_name, balance, budget, last_modified) VALUES ($1, 0, $2, NOW())', [newName, newBudget], (err, results) => {
+        if(err) {
+            throw err;
+        }
+        res.status(201).send(`Envelope ${newName} created`);
+    });
+
+};
 
 
 
-module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, };
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, };
