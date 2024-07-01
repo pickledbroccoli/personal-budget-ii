@@ -59,21 +59,39 @@ const getEnvelope = (req, res) => {
 };
 
 // post to create new envelope
-
 const createNewEnvelope = (req, res) => {
     
     const newName = req.body.name;
     const newBudget = Number(req.body.budget);
 
-    pool.query('INSERT INTO envelopes (envelope_name, balance, budget, last_modified) VALUES ($1, 0, $2, NOW())', [newName, newBudget], (err, results) => {
+    if ((newName !== '') &&  (newBudget >= 0)) {
+
+        pool.query('INSERT INTO envelopes (envelope_name, balance, budget, last_modified) VALUES ($1, 0, $2, NOW())', [newName, newBudget], (err, results) => {
+            if(err) {
+                throw err;
+            }
+            res.status(201).send(`Envelope ${newName} created`);
+        });
+    } else {
+        res.status(400).send('Name and valid budget value must be provided');
+    }
+};
+
+// delete a specific envelope by NAME
+const deleteEnvelope = (req, res) => {
+    
+    const thisEnvelope = req.params.name;
+    
+    // only empty envelopes get to be deleted - this check should be imlpemented in the DB
+    pool.query('DELETE FROM envelopes WHERE envelope_name = $1', [thisEnvelope], (err, results) => {
         if(err) {
             throw err;
         }
-        res.status(201).send(`Envelope ${newName} created`);
+        res.status(204).send(`${thisEnvelope} deleted`);
     });
-
+      
 };
 
 
 
-module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, };
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, };

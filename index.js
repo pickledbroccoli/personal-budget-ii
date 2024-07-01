@@ -32,6 +32,9 @@ app.get('/envelopes/:name', db.getEnvelope);
 // POST route to create new envelope
 app.post('/envelopes', db.createNewEnvelope);
 
+// delete a specific envelope by NAME
+app.delete('/envelopes/:name', db.deleteEnvelope);
+
 /*
 // subtract amount from envelope - amount in Headers
 app.put('/envelopes/deduct/:name', );
@@ -42,29 +45,11 @@ app.put('/envelopes/add/:name', );
 // transfer budgets between envelopes (amount in header)
 app.put('/envelopes/transfer/:from/:to', );
 
-// delete a specific envelope by NAME
-app.delete('envelopes/:name', );
+
 
 
 
 /* copied from project 1
-
-// POST route to create new envelope
-budgetRouter.post('/envelopes', (req, res, next) => {
-    const newName = req.body.name;
-    const newBalance = Number(req.body.budget);
-    
-    if ((newName !== '') && (newBalance >= 0)) {
-        createNewEnvelope(newName, newBalance);
-        const freshEnvelope = envelopes[envelopes.length -1];
-
-        res.status(201).send(freshEnvelope);
-
-    } else {
-        res.status(400).send('no Name or Starting Budget given');
-    }
-});
-
 
 // update a specific envelope by NAME
 
@@ -110,24 +95,7 @@ budgetRouter.post('/envelopes/transfer/:from/:to', (req, res, next) => {
 });
 
 
-// delete a specific envelope by NAME
-budgetRouter.delete('/envelopes/:name', (req, res, next) => {
-    const thisIndex = getIndexByName(req.params.name);
-    if (thisIndex !== -1) {
-        const thisEnvelope = envelopes[thisIndex];
 
-        // only empty envelopes get to be deleted
-        if (thisEnvelope.balance !== 0) {
-            res.status(400).send('cannot delete envelope with a positive budget')
-        } else {
-            envelopes.splice(thisIndex, 1);
-            res.status(204).send(`envelope ${req.params.name} deleted`);
-        }
-
-    } else {
-        res.status(404).send(`envelope named ${req.params.name} not found`)
-    }
-});
 
 */
 
