@@ -37,7 +37,7 @@ const getEnvelopeNames = (req, res) => {
 // get all data 
 const getAllEnvelopes = (req, res) => {
 
-    pool.query('SELECT * FROM envelopes', (err, results) => {
+    pool.query('SELECT * FROM envelopes ORDER BY id ASC', (err, results) => {
         if(err) {
             throw err;
         }
@@ -92,6 +92,18 @@ const deleteEnvelope = (req, res) => {
       
 };
 
+// UPDATE balance - both for withdraw and addition - frontend should handle when to use
+const changeBalance = (req, res) => {
+    const thisEnvelope = req.params.name;
+    const withThisAmount = Number(req.header('amount'));
+        
+    pool.query('UPDATE envelopes SET balance = balance + $1 WHERE envelope_name = $2', [withThisAmount, thisEnvelope], (err, results) => {
+        if(err) {
+            throw err;
+        }
+        res.status(200).send(`Balance of ${thisEnvelope} updated`);
+    });
+    
+};
 
-
-module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, };
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, changeBalance, };

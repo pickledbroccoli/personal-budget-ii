@@ -35,13 +35,12 @@ app.post('/envelopes', db.createNewEnvelope);
 // delete a specific envelope by NAME
 app.delete('/envelopes/:name', db.deleteEnvelope);
 
+
+// change balance in specific envelope - amount in Headers
+// this always ADDs(+) -> frontend should handle (-1 *) for deduction, (+1 *) for addition
+app.put('/envelopes/change-balance/:name', db.changeBalance);
+
 /*
-// subtract amount from envelope - amount in Headers
-app.put('/envelopes/deduct/:name', );
-
-// add amount to envelope - amount in Headers
-app.put('/envelopes/add/:name', );
-
 // transfer budgets between envelopes (amount in header)
 app.put('/envelopes/transfer/:from/:to', );
 
@@ -53,17 +52,7 @@ app.put('/envelopes/transfer/:from/:to', );
 
 // update a specific envelope by NAME
 
-// subtract amount from envelope - amount in Headers
-budgetRouter.put('/envelopes/deduct/:name', (req, res, next) => {
-    const thisIndex = getIndexByName(req.params.name);
-    const deductThisAmount = Number(req.header('amount'));
 
-    if (thisIndex !== -1 && deductThisAmount >= 0 && modifyBalance(envelopes[thisIndex], -1 * deductThisAmount)) {
-            res.status(200).send(envelopes[thisIndex]);
-    } else {
-        res.status(404).send(`envelope named ${req.params.name} not found, or balance is insufficient`)
-    }
-});
 
 // add amount to envelope - amount in Headers
 budgetRouter.put('/envelopes/add/:name', (req, res, next) => {
