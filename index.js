@@ -35,6 +35,9 @@ app.post('/envelopes', db.createNewEnvelope);
 // delete a specific envelope by NAME
 app.delete('/envelopes/:name', db.deleteEnvelope);
 
+// get all transaction data
+app.get('/transactions', db.transactionCheck);
+
 
 // change balance in specific envelope - amount in Headers
 // this always ADDs(+) -> frontend should handle (-1 *) for deduction, (+1 *) for addition

@@ -29,6 +29,14 @@ const transactionLogger = (req, res) => {
 
 };
 
+const transactionCheck = (req, res) => {
+    pool.query('SELECT * FROM transactions ORDER BY id', (err, results) => {
+        if (err) {
+            throw err;
+        }
+        res.status(200).json(results.rows);
+    });
+};
 
 
 // MARK: CALLBACKS
@@ -165,4 +173,4 @@ const transferBetween = (req, res) => {
 };
 
 
-module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, addBalance, deductBalance, transferBetween, transactionLogger, };
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, addBalance, deductBalance, transferBetween, transactionLogger, transactionCheck, };
