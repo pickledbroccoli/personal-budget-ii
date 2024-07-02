@@ -38,7 +38,9 @@ app.delete('/envelopes/:name', db.deleteEnvelope);
 
 // change balance in specific envelope - amount in Headers
 // this always ADDs(+) -> frontend should handle (-1 *) for deduction, (+1 *) for addition
-app.put('/envelopes/change-balance/:name', db.changeBalance);
+// created a separate route to include transaction logging for withdrawals (recipient in Headers)
+app.put('/envelopes/add-balance/:name', db.addBalance);
+app.put('/envelopes/deduct-balance/:name', db.deductBalance, db.transactionLogger);
 
 
 // transfer budgets between envelopes (amount in header) - could this be two update calls?
