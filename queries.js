@@ -103,7 +103,30 @@ const changeBalance = (req, res) => {
         }
         res.status(200).send(`Balance of ${thisEnvelope} updated`);
     });
-    
+        
 };
 
-module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, changeBalance, };
+// transfer budgets between envelopes (amount in header)
+const transferBetween = (req, res) => {
+    
+    // check if amount is available in the first envelope
+    const withThisAmount = Number(req.header('amount'));
+    const fromEnvelope = req.params.from;
+    const toEnvelope = req.params.to;
+
+    pool.query('UPDATE envelopes SET balance = balance - $1 WHERE envelope_name = $2', [withThisAmount, fromEnvelope], (err, results) => {
+        if(err) {
+            throw err;
+        }
+        pool.query('UPDATE envelopes SET balance = balance + $1 WHERE envelope_name = $2', [withThisAmount, toEnvelope], (err, results) => {
+            if(err) {
+                throw err;
+            }
+            res.status(200).send(`${withThisAmount} from ${fromEnvelope} transfered to ${toEnvelope}`);
+        });
+    });
+       
+};
+
+
+module.exports = { getEnvelopeNames, getAllEnvelopes, getEnvelope, createNewEnvelope, deleteEnvelope, changeBalance, transferBetween, };
