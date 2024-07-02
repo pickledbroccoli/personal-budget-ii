@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: Personal Budget II cc portfolio project
+  version: 1.0.0
+  description: >-
+    Codecademy practice project for Node.js/Express, RESTful API creation and
+    PostgreSQL integration
+  license:
+    name: ISC
+paths:
+  /envelopes:
+    summary: get all the envelopes' data
+    description: >-
+      get all the envelopes' data is JSON format { "id": integer,
+      "envelope_name": string, "balance": float, "budget": float, "last
+      modified": timestamp}
+    get:
+      summary: retrieve JSON contqining envelopes' data
+      description: ''
+      operationId: envelopes_get
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                envelopesGETexample:
+                  value: |-
+                    [
+                        {
+                            "id": 1,
+                            "envelope_name": "Savings",
+                            "balance": 190.25,
+                            "budget": 25,
+                            "last_modified": "2024-06-28T11:36:14.408Z"
+                        },
+                        {
+                            "id": 2,
+                            "envelope_name": "Training",
+                            "balance": 10,
+                            "budget": 10,
+                            "last_modified": "2024-06-28T11:37:11.720Z"
+                        },
+                        {
+                            "id": 3,
+                            "envelope_name": "Games",
+                            "balance": 55,
+                            "budget": 20,
+                            "last_modified": "2024-06-28T11:37:35.616Z"
+                        }
+                    ]
+    post:
+      summary: create new envelope
+      description: >-
+        envelope_name, budget should be provided in request body (JSON format) -
+        ID and DATE  is handled automatically by DB, starting balance is
+        defaulted to 0 (empty envelope)
+      operationId: envelopes_create
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                envelopesCreateExample:
+                  value: Envelope TestEnvelope01 created
+  /envelope-names:
+    summary: list existing envelopes
+    get:
+      summary: retrieve JSON containing names of already existing envelopes
+      description: ' xx '
+      operationId: envelope-names_get
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                envelopeNamesExample:
+                  value: |-
+                    [
+                        {
+                            "envelope_name": "Games"
+                        },
+                        {
+                            "envelope_name": "Savings"
+                        },
+                        {
+                            "envelope_name": "Training"
+                        },
+                        {
+                            "envelope_name": "TestEnvelope01"
+                        }
+                    ]
+  /envelopes/:name:
+    summary: route for a specific envelope
+    description: route for a specific envelope, matching the name provided
+    get:
+      summary: retrieve data from specific envelope
+      description: ''
+      operationId: envelope_name_get
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                envelopeGET:
+                  value: |-
+                    [
+                        {
+                            "id": 2,
+                            "envelope_name": "Training",
+                            "balance": 10,
+                            "budget": 10,
+                            "last_modified": "2024-06-28T11:37:11.720Z"
+                        }
+                    ]
+    delete:
+      summary: deleteing specific envelope
+      description: deleting specific envelope
+      operationId: envelope_name_delete
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                envelopeDelete:
+                  value: Savings deleted
+  /envelopes/add-balance/:name:
+    summary: route for adding money to a specific envelope, matching the name
+    put:
+      summary: deposit money to envelope's balance
+      description: '''name'' matching envelope_name, ''amount'' (float) provided in HEADER'
+      operationId: add_balance
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                addBalanceExampla:
+                  value: Balance of Savings updated
+  /envelopes/deduct-balance/:name:
+    summary: route for withdrawing money from a specific envelope matching the name
+    put:
+      summary: withdraw money from specific envelope
+      description: >-
+        name matching envelope_name, 'amount' (float) and 'recipient' (string)
+        provided in HEADER. Creates a transaction log in the database
+      operationId: deduct_balance
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                deductBalanceExample:
+                  value: Transaction logged
+  /envelopes/transfer/:from/:to:
+    summary: route for transfering money between envelopes
+    description: >-
+      from: envelope_name to withdraw money from, to: envelope_name to deposit
+      money to
+    put:
+      summary: transfers money between envelopes
+      description: >-
+        from: envelope_name to withdraw from, to: envelope_name to deposit to.
+        'amount' (float) should be provided in HEADER
+      operationId: transfer_balance
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                transfer_balanceExample:
+                  value: 25 from Savings transfered to Games
+  /transactions:
+    summary: retrieve all transactions data
+    get:
+      summary: retrieve all transaction data in JSON format
+      description: ''
+      operationId: transactions_get
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                transactionsExample:
+                  value: |-
+                    [
+                        {
+                            "id": 1,
+                            "amount": 5,
+                            "envelope_id": 1,
+                            "recipient": "blabla",
+                            "date": "2024-07-02T07:20:17.142Z"
+                        },
+                        {
+                            "id": 2,
+                            "amount": 6,
+                            "envelope_id": 3,
+                            "recipient": "lablab",
+                            "date": "2024-07-02T07:31:12.260Z"
+                        },
+                        {
+                            "id": 3,
+                            "amount": 15,
+                            "envelope_id": 1,
+                            "recipient": null,
+                            "date": "2024-07-02T08:00:45.882Z"
+                        },
+                        {
+                            "id": 4,
+                            "amount": 15,
+                            "envelope_id": 1,
+                            "recipient": "Rec01",
+                            "date": "2024-07-02T08:03:28.424Z"
+                        },
+                        {
+                            "id": 5,
+                            "amount": 5,
+                            "envelope_id": 2,
+                            "recipient": "Rec01",
+                            "date": "2024-07-02T08:04:51.693Z"
+                        }    
+                    ]
